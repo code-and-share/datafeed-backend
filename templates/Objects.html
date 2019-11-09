@@ -1,0 +1,45 @@
+{{ define "Objects" }}
+{{ template "Header" }}
+<div class="container">
+  <h2> Object List </h2>
+
+  <p>
+      <a href="/new" class="btn btn-primary">New Object</a>
+  </p>
+  <table id="tabledata" class="display" style="width: 100%">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Content</th>
+        <th></th>        
+      </tr>
+    </thead>
+    <tfoot>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Content</th>
+        <th></th>        
+      </tr>
+    </tfoot>
+    <tbody>
+      {{ range . }}
+      <tr>
+        <td>{{ .Id }}</td>
+        <td> {{ .Name }}  </td>
+        <td>{{ .Content }} </td>
+        <td>
+          <a href="/show?id={{ .Id }}" class="btn btn-primary">View</a>
+          <a href="/edit?id={{ .Id }}" class="btn btn-primary">Edit</a>
+          <a href="/delete?id={{ .Id }}" class="btn btn-danger">Delete</a>
+        </td>
+      </tr>
+      {{ end }}
+    </tbody>
+
+  </table>
+
+</div>
+{{ template "Footer" }}
+{{ end }}
