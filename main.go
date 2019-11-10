@@ -118,7 +118,7 @@ func ObjectsShow(w http.ResponseWriter, r *http.Request) {
 		object.Name = name
 		object.Content = content
 	}
-	tmpl.ExecuteTemplate(w, "Show", object)
+	tmpl.ExecuteTemplate(w, "Objects_Show", object)
 	defer db.Close()
 }
 
@@ -126,7 +126,7 @@ func New(w http.ResponseWriter, r *http.Request) {
 	tmpl.ExecuteTemplate(w, "New", nil)
 }
 
-func Edit(w http.ResponseWriter, r *http.Request) {
+func ObjectsEdit(w http.ResponseWriter, r *http.Request) {
 	db := dbConn()
 	nId := r.URL.Query().Get("id")
 	selDB, err := db.Query("SELECT * FROM objects WHERE id=?", nId)
@@ -149,7 +149,7 @@ func Edit(w http.ResponseWriter, r *http.Request) {
 		object.Content = content
 	}
 
-	tmpl.ExecuteTemplate(w, "Edit", object)
+	tmpl.ExecuteTemplate(w, "Objects_Edit", object)
 	defer db.Close()
 }
 
@@ -280,13 +280,6 @@ func Paths(w http.ResponseWriter, r *http.Request) {
 
 	path := Path{}
 	res := []Path{}
-	// Path struct
-	type Path struct {
-		Id         int
-		Name       string
-		PhaseOrder int
-		PhaseId    int
-	}
 
 	for selDB.Next() {
 		var id, phase_order, phase_id int
@@ -306,6 +299,34 @@ func Paths(w http.ResponseWriter, r *http.Request) {
 	tmpl.ExecuteTemplate(w, "Paths", res)
 	defer db.Close()
 }
+func PathsShow(w http.ResponseWriter, r *http.Request) {
+	db := dbConn()
+	nId := r.URL.Query().Get("id")
+	selDB, err := db.Query("SELECT * FROM paths WHERE id=?", nId)
+	if err != nil {
+		panic(err.Error())
+	}
+
+	path := Path{}
+
+	for selDB.Next() {
+		var id, phase_order, phase_id int
+		var name string
+		err := selDB.Scan(&id, &name, &phase_order, &phase_id)
+		if err != nil {
+			panic(err.Error())
+		}
+
+		log.Println("Showing Row: Id " + string(id) + " | name " + name + " | phase_order " + string(phase_order) + " | phase_id " + string(phase_id))
+
+		path.Id = id
+		path.Name = name
+		path.PhaseOrder = phase_order
+		path.PhaseId = phase_id
+	}
+	tmpl.ExecuteTemplate(w, "Paths_Show", path)
+	defer db.Close()
+}
 
 func main() {
 	log.Println("Server started on: http://localhost:8080")
@@ -313,12 +334,13 @@ func main() {
 	http.HandleFunc("/objects", Objects)
 	http.HandleFunc("/objects_show", ObjectsShow)
 	http.HandleFunc("/objects_new", New)
-	http.HandleFunc("/objects_edit", Edit)
+	http.HandleFunc("/objects_edit", ObjectsEdit)
 	http.HandleFunc("/objects_insert", Insert)
 	http.HandleFunc("/objects_update", Update)
 	http.HandleFunc("/objects_delete", Delete)
 	http.HandleFunc("/phases", Phases)
 	http.HandleFunc("/phases_show", PhasesShow)
 	http.HandleFunc("/paths", Paths)
+	http.HandleFunc("/paths_show", PathsShow)
 	http.ListenAndServe(":8080", nil)
 }

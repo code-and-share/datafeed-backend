@@ -1,0 +1,13 @@
+{{ define "Paths_Show" }}
+  {{ template "Header" }}
+    <div class="container">
+        <h2> Path</h2>
+        <p><strong>Name:</strong> {{ .Name }} </p>
+        <p><strong>Phase Order:</strong> {{ .PhaseOrder }} </p>
+        <p><strong>Phase ID:</strong> {{ .PhaseId }} </p>
+        <br /> 
+        <a href="/paths_edit?id={{ .Id }}" class="btn btn-primary">Edit</a>
+        <a href="/paths" class="btn btn-primary">Go back to paths</a>
+    </div>
+  {{ template "Footer" }}
+{{ end }}

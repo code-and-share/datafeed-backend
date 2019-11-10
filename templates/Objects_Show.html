@@ -1,0 +1,12 @@
+{{ define "Objects_Show" }}
+  {{ template "Header" }}
+    <div class="container">
+        <h2> Object</h2>
+        <p><strong>Name:</strong> {{ .Name }} </p>
+        <p><strong>Content:</strong> {{ .Content }} </p>
+        <br /> 
+        <a href="/objects_edit?id={{ .Id }}" class="btn btn-primary">Edit</a>
+        <a href="/objects" class="btn btn-primary">Go back to objects</a>
+    </div>
+  {{ template "Footer" }}
+{{ end }}
