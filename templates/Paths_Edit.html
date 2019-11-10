@@ -1,0 +1,23 @@
+{{ define "Paths_Edit" }}
+  {{ template "Header" }}
+    <div class="container col-5">
+        <h2>Edit Path</h2>  
+        <form method="POST" action="/update">
+          <input type="hidden" name="uid" value="{{ .Id }}" />
+          <div class="form-group">
+              <label> Name </label>
+              <input type="text" name="name" value="{{ .Name }}" class="form-control" />
+          </div>
+          <div class="form-group">
+              <label> Phase Order </label>
+              <input type="text" name="phase_order" value="{{ .PhaseOrder }}" class="form-control" />
+          </div>
+          <div class="form-group">
+              <label> Phase ID </label>
+              <input type="text" name="phase_id" value="{{ .PhaseId }}" class="form-control" />
+          </div>
+          <input type="submit" value="Save object" class="btn btn-primary" />
+        </form><br />
+    </div>  
+  {{ template "Footer" }}
+{{ end }}

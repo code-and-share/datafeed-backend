@@ -4,7 +4,7 @@
   <h2> Object List </h2>
 
   <p>
-      <a href="/object_new" class="btn btn-primary">New Object</a>
+      <a href="/objects_new" class="btn btn-primary">New Object</a>
   </p>
   <table id="tabledata" class="display" style="width: 100%">
     <thead>
@@ -30,9 +30,9 @@
         <td> {{ .Name }}  </td>
         <td>{{ .Content }} </td>
         <td>
-          <a href="/object_show?id={{ .Id }}" class="btn btn-primary">View</a>
-          <a href="/object_edit?id={{ .Id }}" class="btn btn-primary">Edit</a>
-          <a href="/object_delete?id={{ .Id }}" class="btn btn-danger">Delete</a>
+          <a href="/objects_show?id={{ .Id }}" class="btn btn-primary">View</a>
+          <a href="/objects_edit?id={{ .Id }}" class="btn btn-primary">Edit</a>
+          <a href="/objects_delete?id={{ .Id }}" class="btn btn-danger">Delete</a>
         </td>
       </tr>
       {{ end }}

@@ -1,0 +1,12 @@
+{{ define "Phases_Show" }}
+  {{ template "Header" }}
+    <div class="container">
+        <h2> Phase</h2>
+        <p><strong>Name:</strong> {{ .Name }} </p>
+        <p><strong>Objects:</strong> {{ .Objects }} </p>
+        <br /> 
+        <a href="/phases_edit?id={{ .Id }}" class="btn btn-primary">Edit</a>
+        <a href="/phases" class="btn btn-primary">Go back to phases</a>
+    </div>
+  {{ template "Footer" }}
+{{ end }}

@@ -4,14 +4,15 @@
   <h2> Path List </h2>
 
   <p>
-      <a href="/path_new" class="btn btn-primary">New Path</a>
+      <a href="/paths_new" class="btn btn-primary">New Path</a>
   </p>
   <table id="tabledata" class="display" style="width: 100%">
     <thead>
       <tr>
         <th>ID</th>
         <th>Name</th>
-        <th>Content</th>
+        <th>PhaseOrder</th>
+        <th>PhaseId</th>
         <th></th>        
       </tr>
     </thead>
@@ -19,7 +20,8 @@
       <tr>
         <th>ID</th>
         <th>Name</th>
-        <th>Content</th>
+        <th>PhaseOrder</th>
+        <th>PhaseId</th>
         <th></th>        
       </tr>
     </tfoot>
@@ -28,11 +30,12 @@
       <tr>
         <td>{{ .Id }}</td>
         <td> {{ .Name }}  </td>
-        <td>{{ .Content }} </td>
+        <td>{{ .PhaseOrder }} </td>
+        <td>{{ .PhaseId }} </td>
         <td>
-          <a href="/path_show?id={{ .Id }}" class="btn btn-primary">View</a>
-          <a href="/path_edit?id={{ .Id }}" class="btn btn-primary">Edit</a>
-          <a href="/path_delete?id={{ .Id }}" class="btn btn-danger">Delete</a>
+          <a href="/paths_show?id={{ .Id }}" class="btn btn-primary">View</a>
+          <a href="/paths_edit?id={{ .Id }}" class="btn btn-primary">Edit</a>
+          <a href="/paths_delete?id={{ .Id }}" class="btn btn-danger">Delete</a>
         </td>
       </tr>
       {{ end }}

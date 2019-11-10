@@ -4,7 +4,7 @@
   <h2> Phase List </h2>
 
   <p>
-      <a href="/phase_new" class="btn btn-primary">New Phase</a>
+      <a href="/phases_new" class="btn btn-primary">New Phase</a>
   </p>
   <table id="tabledata" class="display" style="width: 100%">
     <thead>
@@ -30,9 +30,9 @@
         <td> {{ .Name }}  </td>
         <td>{{ .Objects }} </td>
         <td>
-          <a href="/phase_show?id={{ .Id }}" class="btn btn-primary">View</a>
-          <a href="/phase_edit?id={{ .Id }}" class="btn btn-primary">Edit</a>
-          <a href="/phase_delete?id={{ .Id }}" class="btn btn-danger">Delete</a>
+          <a href="/phases_show?id={{ .Id }}" class="btn btn-primary">View</a>
+          <a href="/phases_edit?id={{ .Id }}" class="btn btn-primary">Edit</a>
+          <a href="/phases_delete?id={{ .Id }}" class="btn btn-danger">Delete</a>
         </td>
       </tr>
       {{ end }}

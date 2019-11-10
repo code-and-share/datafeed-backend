@@ -94,8 +94,7 @@ func Objects(w http.ResponseWriter, r *http.Request) {
 	defer db.Close()
 }
 
-//Show handler
-func Show(w http.ResponseWriter, r *http.Request) {
+func ObjectsShow(w http.ResponseWriter, r *http.Request) {
 	db := dbConn()
 	nId := r.URL.Query().Get("id")
 	selDB, err := db.Query("SELECT * FROM objects WHERE id=?", nId)
@@ -209,19 +208,6 @@ func Phases(w http.ResponseWriter, r *http.Request) {
 		panic(err.Error())
 	}
 
-	//// This is our data
-	//type PhaseObjects struct {
-	//	Object   string `json:"object"`
-	//	Position string `json:"position"`
-	//}
-	//
-	//// Phase struct
-	//type Phase struct {
-	//	Id      int
-	//	Name    string
-	//	Objects []PhaseObjects
-	//}
-
 	phase := Phase{}
 	res := []Phase{}
 
@@ -245,7 +231,40 @@ func Phases(w http.ResponseWriter, r *http.Request) {
 		phase.Objects = objects
 		res = append(res, phase)
 	}
-	tmpl.ExecuteTemplate(w, "Objects", res)
+	tmpl.ExecuteTemplate(w, "Phases", res)
+	defer db.Close()
+}
+
+func PhasesShow(w http.ResponseWriter, r *http.Request) {
+	db := dbConn()
+	nId := r.URL.Query().Get("id")
+	selDB, err := db.Query("SELECT * FROM phases WHERE id=?", nId)
+	if err != nil {
+		panic(err.Error())
+	}
+
+	phase := Phase{}
+
+	for selDB.Next() {
+		var id int
+		var name, objects_json string
+		err := selDB.Scan(&id, &name, &objects_json)
+		if err != nil {
+			panic(err.Error())
+		}
+		objects := make([]PhaseObjects, 0)
+		err = json.Unmarshal([]byte(objects_json), &objects)
+		if err != nil {
+			log.Println("Error decoding JSON: " + err.Error())
+		}
+
+		log.Println("Showing Row: Id " + string(id) + " | name " + name + " | objects " + objects_json)
+
+		phase.Id = id
+		phase.Name = name
+		phase.Objects = objects
+	}
+	tmpl.ExecuteTemplate(w, "Phases_Show", phase)
 	defer db.Close()
 }
 
@@ -292,13 +311,14 @@ func main() {
 	log.Println("Server started on: http://localhost:8080")
 	http.HandleFunc("/", Index)
 	http.HandleFunc("/objects", Objects)
-	http.HandleFunc("/object_show", Show)
-	http.HandleFunc("/object_new", New)
-	http.HandleFunc("/object_edit", Edit)
-	http.HandleFunc("/object_insert", Insert)
-	http.HandleFunc("/object_update", Update)
-	http.HandleFunc("/object_delete", Delete)
+	http.HandleFunc("/objects_show", ObjectsShow)
+	http.HandleFunc("/objects_new", New)
+	http.HandleFunc("/objects_edit", Edit)
+	http.HandleFunc("/objects_insert", Insert)
+	http.HandleFunc("/objects_update", Update)
+	http.HandleFunc("/objects_delete", Delete)
 	http.HandleFunc("/phases", Phases)
+	http.HandleFunc("/phases_show", PhasesShow)
 	http.HandleFunc("/paths", Paths)
 	http.ListenAndServe(":8080", nil)
 }
