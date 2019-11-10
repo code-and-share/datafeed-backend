@@ -62,7 +62,9 @@ func Index(w http.ResponseWriter, r *http.Request) {
 	tmpl.ExecuteTemplate(w, "Index", aux)
 }
 
-//Objects Main handler
+//-----------------------------------------------------------
+// Functions to handle Objects
+//-----------------------------------------------------------
 func Objects(w http.ResponseWriter, r *http.Request) {
 	db := dbConn()
 	selDB, err := db.Query("SELECT * FROM objects ORDER BY id DESC")
@@ -196,15 +198,98 @@ func Delete(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, "/", 301)
 }
 
+//-----------------------------------------------------------
+// Functions to handle Phases
+//-----------------------------------------------------------
+func Phases(w http.ResponseWriter, r *http.Request) {
+	db := dbConn()
+	selDB, err := db.Query("SELECT * FROM phases ORDER BY id DESC")
+	if err != nil {
+		panic(err.Error())
+	}
+
+	//// This is our data
+	//type PhaseObjects struct {
+	//	Object   string `json:"object"`
+	//	Position string `json:"position"`
+	//}
+	//
+	//// Phase struct
+	//type Phase struct {
+	//	Id      int
+	//	Name    string
+	//	Objects []PhaseObjects
+	//}
+
+	phase := Phases{}
+	res := []Phases{}
+
+	for selDB.Next() {
+		var id int
+		var name, objects string
+		err := selDB.Scan(&id, &name, &objects)
+		if err != nil {
+			panic(err.Error())
+		}
+		log.Println("Listing Row: Id " + string(id) + " | name " + name + " | objects " + objects)
+
+		phase.Id = id
+		phase.Name = name
+		phase.Objects = objects
+		res = append(res, phase)
+	}
+	tmpl.ExecuteTemplate(w, "Objects", res)
+	defer db.Close()
+}
+
+//-----------------------------------------------------------
+// Functions to handle Paths
+//-----------------------------------------------------------
+func Paths(w http.ResponseWriter, r *http.Request) {
+	db := dbConn()
+	selDB, err := db.Query("SELECT * FROM paths ORDER BY id DESC")
+	if err != nil {
+		panic(err.Error())
+	}
+
+	path := Path{}
+	res := []Path{}
+	// Path struct
+	type Path struct {
+		Id         int
+		Name       string
+		PhaseOrder int
+		PhaseId    int
+	}
+
+	for selDB.Next() {
+		var id, phase_order, phase_id int
+		var name string
+		err := selDB.Scan(&id, &name, &phase_order, &phase_id)
+		if err != nil {
+			panic(err.Error())
+		}
+		log.Println("Listing Row: Id " + string(id) + " | name " + name + " | phase_order " + string(phase_order) + " | phase_id " + string(phase_id))
+
+		object.Id = id
+		object.Name = name
+		object.PhaseOrder = phase_order
+		object.PhaseId = phase_id
+		res = append(res, object)
+	}
+	tmpl.ExecuteTemplate(w, "Paths", res)
+	defer db.Close()
+}
+
 func main() {
 	log.Println("Server started on: http://localhost:8080")
 	http.HandleFunc("/", Index)
 	http.HandleFunc("/objects", Objects)
-	http.HandleFunc("/show", Show)
-	http.HandleFunc("/new", New)
-	http.HandleFunc("/edit", Edit)
-	http.HandleFunc("/insert", Insert)
-	http.HandleFunc("/update", Update)
-	http.HandleFunc("/delete", Delete)
+	http.HandleFunc("/object_show", Show)
+	http.HandleFunc("/object_new", New)
+	http.HandleFunc("/object_edit", Edit)
+	http.HandleFunc("/object_insert", Insert)
+	http.HandleFunc("/object_update", Update)
+	http.HandleFunc("/object_delete", Delete)
 	http.ListenAndServe(":8080", nil)
 }
