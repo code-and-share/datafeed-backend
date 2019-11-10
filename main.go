@@ -122,8 +122,8 @@ func ObjectsShow(w http.ResponseWriter, r *http.Request) {
 	defer db.Close()
 }
 
-func New(w http.ResponseWriter, r *http.Request) {
-	tmpl.ExecuteTemplate(w, "New", nil)
+func ObjectsNew(w http.ResponseWriter, r *http.Request) {
+	tmpl.ExecuteTemplate(w, "Objects_New", nil)
 }
 
 func ObjectsEdit(w http.ResponseWriter, r *http.Request) {
@@ -268,6 +268,43 @@ func PhasesShow(w http.ResponseWriter, r *http.Request) {
 	defer db.Close()
 }
 
+func PhasesNew(w http.ResponseWriter, r *http.Request) {
+	tmpl.ExecuteTemplate(w, "Phases_New", nil)
+}
+
+func PhasesEdit(w http.ResponseWriter, r *http.Request) {
+	db := dbConn()
+	nId := r.URL.Query().Get("id")
+	selDB, err := db.Query("SELECT * FROM phases WHERE id=?", nId)
+	if err != nil {
+		panic(err.Error())
+	}
+
+	phase := Phase{}
+
+	for selDB.Next() {
+		var id int
+		var name, objects_json string
+		err := selDB.Scan(&id, &name, &objects_json)
+		if err != nil {
+			panic(err.Error())
+		}
+
+		objects := make([]PhaseObjects, 0)
+		err = json.Unmarshal([]byte(objects_json), &objects)
+		if err != nil {
+			log.Println("Error decoding JSON: " + err.Error())
+		}
+
+		phase.Id = id
+		phase.Name = name
+		phase.Objects = objects
+	}
+
+	tmpl.ExecuteTemplate(w, "Phases_Edit", phase)
+	defer db.Close()
+}
+
 //-----------------------------------------------------------
 // Functions to handle Paths
 //-----------------------------------------------------------
@@ -328,19 +365,53 @@ func PathsShow(w http.ResponseWriter, r *http.Request) {
 	defer db.Close()
 }
 
+func PathsNew(w http.ResponseWriter, r *http.Request) {
+	tmpl.ExecuteTemplate(w, "Paths_New", nil)
+}
+
+func PathsEdit(w http.ResponseWriter, r *http.Request) {
+	db := dbConn()
+	nId := r.URL.Query().Get("id")
+	selDB, err := db.Query("SELECT * FROM paths WHERE id=?", nId)
+	if err != nil {
+		panic(err.Error())
+	}
+
+	path := Path{}
+
+	for selDB.Next() {
+		var id, phase_order, phase_id int
+		var name string
+		err := selDB.Scan(&id, &name, &phase_order, &phase_id)
+		if err != nil {
+			panic(err.Error())
+		}
+
+		path.Id = id
+		path.Name = name
+		path.PhaseOrder = phase_order
+		path.PhaseId = phase_id
+	}
+
+	tmpl.ExecuteTemplate(w, "Paths_Edit", path)
+	defer db.Close()
+}
+
 func main() {
 	log.Println("Server started on: http://localhost:8080")
 	http.HandleFunc("/", Index)
 	http.HandleFunc("/objects", Objects)
 	http.HandleFunc("/objects_show", ObjectsShow)
-	http.HandleFunc("/objects_new", New)
+	http.HandleFunc("/objects_new", ObjectsNew)
 	http.HandleFunc("/objects_edit", ObjectsEdit)
 	http.HandleFunc("/objects_insert", Insert)
 	http.HandleFunc("/objects_update", Update)
 	http.HandleFunc("/objects_delete", Delete)
 	http.HandleFunc("/phases", Phases)
 	http.HandleFunc("/phases_show", PhasesShow)
+	http.HandleFunc("/phases_new", PhasesNew)
 	http.HandleFunc("/paths", Paths)
 	http.HandleFunc("/paths_show", PathsShow)
+	http.HandleFunc("/paths_new", PathsNew)
 	http.ListenAndServe(":8080", nil)
 }

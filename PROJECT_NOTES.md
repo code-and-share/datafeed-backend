@@ -26,7 +26,8 @@ TBD
   * List phase :ok:
   * List path :ok:
 * I want to be able to quickly add objects, phases and paths
-  * Add object :ok:
+  * Add possibility to save to DB a new object
+  * Add object 
   * Add phase
   * Get objects for phase from actual objects
   * Add path
