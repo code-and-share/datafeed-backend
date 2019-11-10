@@ -4,6 +4,7 @@ package main
 
 import (
 	"database/sql"
+	"encoding/json"
 	"log"
 	"net/http"
 	"os"
@@ -221,18 +222,24 @@ func Phases(w http.ResponseWriter, r *http.Request) {
 	//	Objects []PhaseObjects
 	//}
 
-	phase := Phases{}
-	res := []Phases{}
+	phase := Phase{}
+	res := []Phase{}
 
 	for selDB.Next() {
 		var id int
-		var name, objects string
-		err := selDB.Scan(&id, &name, &objects)
+		var name, objects_json string
+		err := selDB.Scan(&id, &name, &objects_json)
 		if err != nil {
 			panic(err.Error())
 		}
-		log.Println("Listing Row: Id " + string(id) + " | name " + name + " | objects " + objects)
+		log.Println("Listing Row: Id " + string(id) + " | name " + name + " | objects " + objects_json)
 
+		objects := make([]PhaseObjects, 0)
+
+		err = json.Unmarshal([]byte(objects_json), &objects)
+		if err != nil {
+			log.Println("Error decoding JSON: " + err.Error())
+		}
 		phase.Id = id
 		phase.Name = name
 		phase.Objects = objects
@@ -271,11 +278,11 @@ func Paths(w http.ResponseWriter, r *http.Request) {
 		}
 		log.Println("Listing Row: Id " + string(id) + " | name " + name + " | phase_order " + string(phase_order) + " | phase_id " + string(phase_id))
 
-		object.Id = id
-		object.Name = name
-		object.PhaseOrder = phase_order
-		object.PhaseId = phase_id
-		res = append(res, object)
+		path.Id = id
+		path.Name = name
+		path.PhaseOrder = phase_order
+		path.PhaseId = phase_id
+		res = append(res, path)
 	}
 	tmpl.ExecuteTemplate(w, "Paths", res)
 	defer db.Close()
@@ -291,5 +298,7 @@ func main() {
 	http.HandleFunc("/object_insert", Insert)
 	http.HandleFunc("/object_update", Update)
 	http.HandleFunc("/object_delete", Delete)
+	http.HandleFunc("/phases", Phases)
+	http.HandleFunc("/paths", Paths)
 	http.ListenAndServe(":8080", nil)
 }
