@@ -19,27 +19,28 @@ I need two things:
 TBD
 # Objectives
 ## Specific
-* I want to be able to quickly list objects, phases and paths
+* I want to be able to quickly list objects, phases and paths :ok:
   * Main menu to access lists :ok:
-  * Upper navigation bar used everywhere
+  * Upper navigation bar used everywhere :ok:
   * List object :ok:
   * List phase :ok:
   * List path :ok:
 * I want to be able to quickly add objects, phases and paths
-  * Add possibility to save to DB a new object
-  * Add object 
+  * Add possibility to save to DB a new object :ok:
+  * Add object :ok:
   * Add phase
   * Get objects for phase from actual objects
   * Add path
   * Get phases for path from actual phases
 * I want to be able to quickly view objects, phases and paths
   * View object :ok:
-  * View phase
+  * View phase :ok:
   * Get objects for phase from actual objects, link to see them
-  * View path
+  * View path :ok:
   * Get phases for path from actual phases, link to see them
 * I want to be able to quickly edit objects, phases and paths
-  * Edit object :ok:
+  * Get ids too, for saving later
+  * Edit object 
   * Edit phase
   * Get objects for phase from actual objects
   * Edit path
@@ -48,16 +49,18 @@ TBD
   * Insert object :ok:
   * Insert phase
   * Get objects for phase from actual objects
-  * Insert path
+  * Insert path (phase id missing from page)
   * Get phases for path from actual phases
 * I want to be able to quickly update objects, phases and paths
-  * Update object :ok:
+  * Get ids too, for saving later
+  * Update object
   * Update phase
   * Get objects for phase from actual objects
   * Update path
   * Get phases for path from actual phases
 * I want to be able to quickly delete objects, phases and paths
   * Delete object :ok:
+  * Get ids too, for deleting the right one
   * Delete phase
   * Show objects that still exist but are no longer in phase
   * Delete path

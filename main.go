@@ -305,6 +305,51 @@ func PhasesEdit(w http.ResponseWriter, r *http.Request) {
 	defer db.Close()
 }
 
+func PhasesInsert(w http.ResponseWriter, r *http.Request) {
+	db := dbConn()
+	if r.Method == "POST" {
+		name := r.FormValue("name")
+		objects := r.FormValue("objects")
+		insForm, err := db.Prepare("INSERT INTO phases (name, objects) VALUES (?, ?)")
+		if err != nil {
+			panic(err.Error())
+		}
+		insForm.Exec(name, objects)
+		log.Println("Insert Data: name " + name + " | objects " + objects)
+	}
+	defer db.Close()
+	http.Redirect(w, r, "/phases", 301)
+}
+
+func PhasesUpdate(w http.ResponseWriter, r *http.Request) {
+	db := dbConn()
+	if r.Method == "POST" {
+		name := r.FormValue("name")
+		objects := r.FormValue("objects")
+		insForm, err := db.Prepare("UPDATE phases SET name=?, objects=?")
+		if err != nil {
+			panic(err.Error())
+		}
+		insForm.Exec(name, objects)
+		log.Println("UPDATE Data: name " + name + " | objects " + objects)
+	}
+	defer db.Close()
+	http.Redirect(w, r, "/phases", 301)
+}
+
+func PhasesDelete(w http.ResponseWriter, r *http.Request) {
+	db := dbConn()
+	phase := r.URL.Query().Get("id")
+	delForm, err := db.Prepare("DELETE FROM phases WHERE id=?")
+	if err != nil {
+		panic(err.Error())
+	}
+	delForm.Exec(phase)
+	log.Println("DELETE " + phase)
+	defer db.Close()
+	http.Redirect(w, r, "/phases", 301)
+}
+
 //-----------------------------------------------------------
 // Functions to handle Paths
 //-----------------------------------------------------------
@@ -397,6 +442,53 @@ func PathsEdit(w http.ResponseWriter, r *http.Request) {
 	defer db.Close()
 }
 
+func PathsInsert(w http.ResponseWriter, r *http.Request) {
+	db := dbConn()
+	if r.Method == "POST" {
+		name := r.FormValue("name")
+		phase_order := r.FormValue("phase_order")
+		phase_id := r.FormValue("phase_id")
+		insForm, err := db.Prepare("INSERT INTO paths (name, phase_order, phase_id) VALUES (?, ?, ?)")
+		if err != nil {
+			panic(err.Error())
+		}
+		insForm.Exec(name, phase_order, phase_id)
+		log.Println("Insert Data: name " + name + " | phase_order " + phase_order + " | phase_id " + phase_id)
+	}
+	defer db.Close()
+	http.Redirect(w, r, "/paths", 301)
+}
+
+func PathsUpdate(w http.ResponseWriter, r *http.Request) {
+	db := dbConn()
+	if r.Method == "POST" {
+		name := r.FormValue("name")
+		phase_order := r.FormValue("phase_order")
+		phase_id := r.FormValue("phase_id")
+		insForm, err := db.Prepare("UPDATE paths SET name=?, phase_order=?, phase_id=?")
+		if err != nil {
+			panic(err.Error())
+		}
+		insForm.Exec(name, phase_order, phase_id)
+		log.Println("UPDATE Data: name " + name + " | phase_order " + phase_order + " | phase_id " + phase_id)
+	}
+	defer db.Close()
+	http.Redirect(w, r, "/paths", 301)
+}
+
+func PathsDelete(w http.ResponseWriter, r *http.Request) {
+	db := dbConn()
+	path := r.URL.Query().Get("id")
+	delForm, err := db.Prepare("DELETE FROM paths WHERE id=?")
+	if err != nil {
+		panic(err.Error())
+	}
+	delForm.Exec(path)
+	log.Println("DELETE " + path)
+	defer db.Close()
+	http.Redirect(w, r, "/paths", 301)
+}
+
 func main() {
 	log.Println("Server started on: http://localhost:8080")
 	http.HandleFunc("/", Index)
@@ -410,8 +502,16 @@ func main() {
 	http.HandleFunc("/phases", Phases)
 	http.HandleFunc("/phases_show", PhasesShow)
 	http.HandleFunc("/phases_new", PhasesNew)
+	http.HandleFunc("/phases_edit", PhasesEdit)
+	http.HandleFunc("/phases_insert", PhasesInsert)
+	http.HandleFunc("/phases_update", PhasesUpdate)
+	http.HandleFunc("/phases_delete", PhasesDelete)
 	http.HandleFunc("/paths", Paths)
 	http.HandleFunc("/paths_show", PathsShow)
 	http.HandleFunc("/paths_new", PathsNew)
+	http.HandleFunc("/paths_edit", PathsEdit)
+	http.HandleFunc("/paths_insert", PathsInsert)
+	http.HandleFunc("/paths_update", PathsUpdate)
+	http.HandleFunc("/paths_delete", PathsDelete)
 	http.ListenAndServe(":8080", nil)
 }
