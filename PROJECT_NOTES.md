@@ -28,8 +28,10 @@ TBD
 * I want to be able to quickly add objects, phases and paths
   * Add possibility to save to DB a new object :ok:
   * Add object :ok:
-  * Add phase
+  * Add phase :ok:
+  * Force format -> [{"object": "forest001", "position": "1"}, {"object": "mountain001", "position": "2"}, {"object": "rain001", "position": "3"}, {"object": "beach001", "position": "4"}]
   * Get objects for phase from actual objects
+  * Add Phase ID to paths_new
   * Add path
   * Get phases for path from actual phases
 * I want to be able to quickly view objects, phases and paths

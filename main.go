@@ -314,7 +314,10 @@ func PhasesInsert(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			panic(err.Error())
 		}
-		insForm.Exec(name, objects)
+		_, err = insForm.Exec(name, objects)
+		if err != nil {
+			panic(err.Error())
+		}
 		log.Println("Insert Data: name " + name + " | objects " + objects)
 	}
 	defer db.Close()
