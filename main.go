@@ -153,7 +153,7 @@ func ObjectsEdit(w http.ResponseWriter, r *http.Request) {
 	defer db.Close()
 }
 
-func Insert(w http.ResponseWriter, r *http.Request) {
+func ObjectsInsert(w http.ResponseWriter, r *http.Request) {
 	db := dbConn()
 	if r.Method == "POST" {
 		name := r.FormValue("name")
@@ -166,10 +166,10 @@ func Insert(w http.ResponseWriter, r *http.Request) {
 		log.Println("Insert Data: name " + name + " | content " + content)
 	}
 	defer db.Close()
-	http.Redirect(w, r, "/", 301)
+	http.Redirect(w, r, "/objects", 301)
 }
 
-func Update(w http.ResponseWriter, r *http.Request) {
+func ObjectsUpdate(w http.ResponseWriter, r *http.Request) {
 	db := dbConn()
 	if r.Method == "POST" {
 		name := r.FormValue("name")
@@ -182,10 +182,10 @@ func Update(w http.ResponseWriter, r *http.Request) {
 		log.Println("UPDATE Data: name " + name + " | content " + content)
 	}
 	defer db.Close()
-	http.Redirect(w, r, "/", 301)
+	http.Redirect(w, r, "/objects", 301)
 }
 
-func Delete(w http.ResponseWriter, r *http.Request) {
+func ObjectsDelete(w http.ResponseWriter, r *http.Request) {
 	db := dbConn()
 	object := r.URL.Query().Get("id")
 	delForm, err := db.Prepare("DELETE FROM objects WHERE id=?")
@@ -195,7 +195,7 @@ func Delete(w http.ResponseWriter, r *http.Request) {
 	delForm.Exec(object)
 	log.Println("DELETE " + object)
 	defer db.Close()
-	http.Redirect(w, r, "/", 301)
+	http.Redirect(w, r, "/objects", 301)
 }
 
 //-----------------------------------------------------------
@@ -404,9 +404,9 @@ func main() {
 	http.HandleFunc("/objects_show", ObjectsShow)
 	http.HandleFunc("/objects_new", ObjectsNew)
 	http.HandleFunc("/objects_edit", ObjectsEdit)
-	http.HandleFunc("/objects_insert", Insert)
-	http.HandleFunc("/objects_update", Update)
-	http.HandleFunc("/objects_delete", Delete)
+	http.HandleFunc("/objects_insert", ObjectsInsert)
+	http.HandleFunc("/objects_update", ObjectsUpdate)
+	http.HandleFunc("/objects_delete", ObjectsDelete)
 	http.HandleFunc("/phases", Phases)
 	http.HandleFunc("/phases_show", PhasesShow)
 	http.HandleFunc("/phases_new", PhasesNew)
