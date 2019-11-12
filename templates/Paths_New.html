@@ -1,7 +1,7 @@
 {{ define "Paths_New" }}
   {{ template "Header" }}
     <div class="container col-5">
-        <h2>New Object</h2>  
+        <h2>New Path</h2>  
         <form method="POST" action="/paths_insert">
           <div class="form-group">
               <label> Name </label>
@@ -15,7 +15,7 @@
               <label> Phase ID </label>
               <input type="text" name="phase_id" class="form-control"/>
           </div>
-          <input type="submit" value="Save object" class="btn btn-primary"/>
+          <input type="submit" value="Save path" class="btn btn-primary"/>
         </form>
     </div> 
   {{ template "Footer" }}
