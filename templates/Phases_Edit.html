@@ -3,7 +3,7 @@
     <div class="container col-5">
         <h2>Edit Object</h2>  
         <form method="POST" action="/phases_update">
-          <input type="hidden" name="uid" value="{{ .Id }}" />
+          <input type="hidden" name="id" value="{{ .Id }}" />
           <div class="form-group">
               <label> Name </label>
               <input type="text" name="name" value="{{ .Name }}" class="form-control" />
@@ -11,6 +11,7 @@
           <div class="form-group">
               <label> Objects </label>
               <input type="text" name="objects" value="{{ .Objects }}" class="form-control" />
+              <div> e.g.: [{"object": "forest001", "position": "1"}, {"object": "mountain001", "position": "2"}, {"object": "rain001", "position": "3"}, {"object": "beach001", "position": "4"}]</div>
           </div>
           <input type="submit" value="Save object" class="btn btn-primary" />
         </form><br />

@@ -172,13 +172,14 @@ func ObjectsInsert(w http.ResponseWriter, r *http.Request) {
 func ObjectsUpdate(w http.ResponseWriter, r *http.Request) {
 	db := dbConn()
 	if r.Method == "POST" {
+		id := r.FormValue("id")
 		name := r.FormValue("name")
 		content := r.FormValue("content")
-		insForm, err := db.Prepare("UPDATE objects SET name=?, content=?")
+		insForm, err := db.Prepare("UPDATE objects SET name=?, content=? WHERE id=?")
 		if err != nil {
 			panic(err.Error())
 		}
-		insForm.Exec(name, content)
+		insForm.Exec(name, content, id)
 		log.Println("UPDATE Data: name " + name + " | content " + content)
 	}
 	defer db.Close()
@@ -327,13 +328,14 @@ func PhasesInsert(w http.ResponseWriter, r *http.Request) {
 func PhasesUpdate(w http.ResponseWriter, r *http.Request) {
 	db := dbConn()
 	if r.Method == "POST" {
+		id := r.FormValue("id")
 		name := r.FormValue("name")
 		objects := r.FormValue("objects")
-		insForm, err := db.Prepare("UPDATE phases SET name=?, objects=?")
+		insForm, err := db.Prepare("UPDATE phases SET name=?, objects=? WHERE id=?")
 		if err != nil {
 			panic(err.Error())
 		}
-		insForm.Exec(name, objects)
+		insForm.Exec(name, objects, id)
 		log.Println("UPDATE Data: name " + name + " | objects " + objects)
 	}
 	defer db.Close()
@@ -465,14 +467,15 @@ func PathsInsert(w http.ResponseWriter, r *http.Request) {
 func PathsUpdate(w http.ResponseWriter, r *http.Request) {
 	db := dbConn()
 	if r.Method == "POST" {
+		id := r.FormValue("id")
 		name := r.FormValue("name")
 		phase_order := r.FormValue("phase_order")
 		phase_id := r.FormValue("phase_id")
-		insForm, err := db.Prepare("UPDATE paths SET name=?, phase_order=?, phase_id=?")
+		insForm, err := db.Prepare("UPDATE paths SET name=?, phase_order=?, phase_id=? WHERE id=?")
 		if err != nil {
 			panic(err.Error())
 		}
-		insForm.Exec(name, phase_order, phase_id)
+		insForm.Exec(name, phase_order, phase_id, id)
 		log.Println("UPDATE Data: name " + name + " | phase_order " + phase_order + " | phase_id " + phase_id)
 	}
 	defer db.Close()

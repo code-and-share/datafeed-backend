@@ -3,7 +3,7 @@
     <div class="container col-5">
         <h2>Edit Path</h2>  
         <form method="POST" action="/paths_update">
-          <input type="hidden" name="uid" value="{{ .Id }}" />
+          <input type="hidden" name="id" value="{{ .Id }}" />
           <div class="form-group">
               <label> Name </label>
               <input type="text" name="name" value="{{ .Name }}" class="form-control" />

@@ -31,8 +31,8 @@ TBD
   * Add phase :ok:
   * Force format -> [{"object": "forest001", "position": "1"}, {"object": "mountain001", "position": "2"}, {"object": "rain001", "position": "3"}, {"object": "beach001", "position": "4"}]
   * Get objects for phase from actual objects
-  * Add Phase ID to paths_new
-  * Add path
+  * Add Phase ID to paths_new :ok:
+  * Add path :ok:
   * Get phases for path from actual phases
 * I want to be able to quickly view objects, phases and paths
   * View object :ok:
@@ -41,32 +41,27 @@ TBD
   * View path :ok:
   * Get phases for path from actual phases, link to see them
 * I want to be able to quickly edit objects, phases and paths
-  * Get ids too, for saving later
-  * Edit object 
-  * Edit phase
+  * Get ids too, for saving later :ok:
+  * Edit object :ok:
+  * Edit phase :ok:
   * Get objects for phase from actual objects
-  * Edit path
+  * Edit path :ok:
   * Get phases for path from actual phases
 * I want to be able to quickly insert objects, phases and paths
   * Insert object :ok:
-  * Insert phase
+  * Make it possible to upload images to shared/open volume on the frontend side (or manage images from here)
+  * Insert phase :ok:
   * Get objects for phase from actual objects
-  * Insert path (phase id missing from page)
-  * Get phases for path from actual phases
-* I want to be able to quickly update objects, phases and paths
-  * Get ids too, for saving later
-  * Update object
-  * Update phase
-  * Get objects for phase from actual objects
-  * Update path
+  * Insert path :ok:
   * Get phases for path from actual phases
 * I want to be able to quickly delete objects, phases and paths
   * Delete object :ok:
-  * Get ids too, for deleting the right one
-  * Delete phase
+  * Delete phase :ok:
   * Show objects that still exist but are no longer in phase
-  * Delete path
+  * Delete path :ok:
   * Show phases that still exist but are no longer in path
+* Build tests
+* Containerize app
 
 # Possible trade-offs between Quality – Time – Cost
 TBD
