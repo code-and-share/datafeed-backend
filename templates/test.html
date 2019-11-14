@@ -78,24 +78,51 @@
                   <button class="btn btn-outline-info" id="add" type="button">Add</button>
               </div>
           </div>
-          <div class="col-12">
-              <ul class="list-group" id="objects-list-group">
-                <li class="list-group-item">Jello</li>
+          <div class="col-16">
+            <tr style="height=100%">
+            <td>
+              <ul class="list-group" id="order-list-group" style="float: left; width: 5%;">
               </ul>
+            </td><td>
+              <ul class="list-group" id="objects-list-group" style="float:left; width: 80%;">
+              </ul>
+            </td><td>
+              <ul class="list-group" id="del-list-group" style="float: left; width: 15%; height: 100%">
+              </ul>
+            </td>
+            </tr>
           </div>
           <input type="submit" value="Save phase" class="btn btn-primary"/>
         </form>
     </div> 
 <script>
-var button = document.getElementById("add");
+var add_button = document.getElementById("add");
 var input = document.getElementById("object");
 var ul = document.getElementById("objects-list-group");
+var ul_order = document.getElementById("order-list-group");
+var ul_del = document.getElementById("del-list-group");
+var order = 1
 
-button.addEventListener("click", function() {
+add_button.addEventListener("click", function() {
   var li = document.createElement("li");
+  var li_order = document.createElement("li");
+  var li_del = document.createElement("li");
+
   li.className = 'list-group-item';
   li.textContent = input.value;
   ul.appendChild(li);
+
+  li_order.className = 'list-group-item';
+  li_order.textContent = order;
+  order += 1
+  ul_order.appendChild(li_order);
+
+  li_del.className = 'list-group-item';
+  li_del.textContent = 'Delete';
+  li_del.style.background = '#dc3545';
+  li_del.style.color = '#fff';
+  li_del.style.textAlign = 'center';
+  ul_del.appendChild(li_del);
 })
 </script>
 <!-- /.container --> 
