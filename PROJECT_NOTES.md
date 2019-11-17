@@ -19,6 +19,10 @@ I need two things:
 TBD
 # Objectives
 ## Specific
+* I want to store the images on this container, make it available for the frontend to use
+  * Add possibility to upload a file
+  * Add possibility to get file from outside the container
+  * Change frontend to get images from this backend
 * I want to be able to quickly list objects, phases and paths :ok:
   * Main menu to access lists :ok:
   * Upper navigation bar used everywhere :ok:
@@ -29,7 +33,8 @@ TBD
   * Add possibility to save to DB a new object :ok:
   * Add object :ok:
   * Add phase :ok:
-  * Force format -> [{"object": "forest001", "position": "1"}, {"object": "mountain001", "position": "2"}, {"object": "rain001", "position": "3"}, {"object": "beach001", "position": "4"}]
+  * Force format -> [{"object": "forest001", "position": "1"}, {...}] :ok
+  * Delete buttons should show hand mouse pointer
   * Get objects for phase from actual objects
   * Add Phase ID to paths_new :ok:
   * Add path :ok:

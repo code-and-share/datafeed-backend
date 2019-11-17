@@ -8,12 +8,109 @@
               <input type="text" name="name" class="form-control"/>
           </div>
           <div class="form-group">
-              <label> Objects </label>
-              <input type="text" name="objects" class="form-control"/>
-              <div> e.g.: [{"object": "forest001", "position": "1"}, {"object": "mountain001", "position": "2"}, {"object": "rain001", "position": "3"}, {"object": "beach001", "position": "4"}]</div>
+              <label>Add here your JSON of Objects:</label>
+              <!--<input type="text" name="objects" id="objects_result" class="form-control"/>
+              <div id="objects_result"></div>
+              -->
+              <input type="text" name="objects" id="objects_result" class="form-control"/>
+          </div>
+          <label>...or simply add here each object, one by one:</label>
+          <div class="col-16">
+            <tr style="height=100%">
+            <td>
+              <ul class="list-group" id="order-list-group" style="float: left; width: 5%;">
+              </ul>
+            </td><td>
+              <ul class="list-group" name="objects-list" id="objects-list-group" style="float:left; width: 80%;">
+              </ul>
+            </td><td>
+              <ul class="list-group" id="del-list-group" style="float: left; width: 15%; height: 100%">
+              </ul>
+            </td>
+            </tr>
+          </div>
+          <div class="input-group mb-3">
+              <input id="object" type="text" class="form-control" placeholder="add an object..." aria-label="Add an object" aria-describedby="basic-addon2">
+              <div class="input-group-append">
+                  <button class="btn btn-outline-info" id="add" type="button">Add</button>
+              </div>
           </div>
           <input type="submit" value="Save phase" class="btn btn-primary"/>
         </form>
     </div> 
+<script>
+var add_button = document.getElementById("add");
+var input = document.getElementById("object");
+var ul = document.getElementById("objects-list-group");
+var ul_order = document.getElementById("order-list-group");
+var ul_del = document.getElementById("del-list-group");
+var order = 1
+
+function setJson(){
+  var result = "["
+  objects = document.getElementById("objects_result")
+  for (i = 1; i < order; i++) {
+    var this_json = ""
+    var this_order = document.getElementById('order' + i.toString());
+    var this_item = document.getElementById('item' + i.toString());
+    this_json = '{"object": "' + this_item.textContent + '", "position": "' + this_order.textContent + '"}'
+    result += this_json + ", "
+  }
+  objects.textContent = result.substring(0, result.length-2) + ']'
+  objects.value = result.substring(0, result.length-2) + ']'
+}
+
+function removeLine(delnumber){
+  var nr = delnumber.replace('del','');
+  var elements = ['item', 'order', 'del'];
+  var e;
+  for (e of elements) {
+    var element = document.getElementById(e + nr);
+    element.parentNode.removeChild(element);
+  } 
+  var startnr = parseInt(nr) + parseInt(1)
+  for (i = startnr; i < order; i++) {
+    for (e of elements) {
+      var element = document.getElementById(e + i.toString());
+      element.setAttribute('id',e + (parseInt(i)-1).toString());
+      if (e == 'order'){
+        element.textContent = parseInt(i)-1;
+      }
+    } 
+  }
+  order -= 1;
+  setJson();
+}
+
+
+add_button.addEventListener("click", function() {
+  var li = document.createElement("li");
+  var li_order = document.createElement("li");
+  var li_del = document.createElement("li");
+  li.setAttribute('id','item'+order);
+  li_order.setAttribute('id','order'+order);
+  li_del.setAttribute('id','del'+order);
+  li_del.setAttribute('onClick','removeLine(this.id)');
+
+  li.className = 'list-group-item';
+  li.textContent = input.value;
+  ul.appendChild(li);
+
+  li_order.className = 'list-group-item';
+  li_order.textContent = order;
+  order += 1
+  ul_order.appendChild(li_order);
+
+  li_del.className = 'list-group-item';
+  li_del.textContent = 'Delete';
+  li_del.style.background = '#dc3545';
+  li_del.style.color = '#fff';
+  li_del.style.textAlign = 'center';
+  ul_del.appendChild(li_del);
+  input.value = "";
+  input.focus();
+  setJson();
+})
+</script>
   {{ template "Footer" }}
 {{ end }}
