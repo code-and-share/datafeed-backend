@@ -20,8 +20,9 @@ TBD
 # Objectives
 ## Specific
 * I want to store the images on this container, make it available for the frontend to use
-  * Add possibility to upload a file
-  * Add possibility to get file from outside the container
+  * Add possibility to upload a file :ok:
+  * Add possibility to get file from outside the container :ok:
+  * Load images into backend :ok:
   * Change frontend to get images from this backend
 * I want to be able to quickly list objects, phases and paths :ok:
   * Main menu to access lists :ok:
