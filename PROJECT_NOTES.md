@@ -36,10 +36,12 @@ TBD
   * Add phase :ok:
   * Force format -> [{"object": "forest001", "position": "1"}, {...}] :ok
   * Delete buttons should show hand mouse pointer
-  * Get objects for phase from actual objects
+  * Get objects for phase from actual objects :ok:
+   * Find a way for this to scale
   * Add Phase ID to paths_new :ok:
   * Add path :ok:
-  * Get phases for path from actual phases
+  * Get phases for path from actual phases :ok:
+   * Find a way for this to scale
 * I want to be able to quickly view objects, phases and paths
   * View object :ok:
   * View phase :ok:

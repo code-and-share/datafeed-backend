@@ -1,43 +1,50 @@
 {{ define "Phases_New" }}
-  {{ template "Header" }}
-    <div class="container col-5">
-        <h2>New Object</h2>  
-        <form method="POST" action="/phases_insert">
-          <div class="form-group">
-              <label> Name </label>
-              <input type="text" name="name" class="form-control"/>
+{{ template "Header" }}
+<div class="container col-5">
+    <h2>New Object</h2>  
+    <form method="POST" action="/phases_insert">
+      <div class="form-group">
+          <label> Name </label>
+          <input type="text" name="name" class="form-control"/>
+      </div>
+      <div class="form-group">
+          <label>Add here your JSON of Objects:</label>
+          <!--<input type="text" name="objects" id="objects_result" class="form-control"/>
+          <div id="objects_result"></div>
+          -->
+          <input type="text" name="objects" id="objects_result" class="form-control"/>
+      </div>
+      <label>...or simply add here each object, one by one:</label>
+      <div class="col-16">
+        <tr style="height=100%">
+        <td>
+          <ul class="list-group" id="order-list-group" style="float: left; width: 5%;">
+          </ul>
+        </td><td>
+          <ul class="list-group" name="objects-list" id="objects-list-group" style="float:left; width: 80%;">
+          </ul>
+        </td><td>
+          <ul class="list-group" id="del-list-group" style="float: left; width: 15%; height: 100%">
+          </ul>
+        </td>
+        </tr>
+      </div>
+      <div class="input-group mb-3">
+        <!--
+          <input id="object" type="text" class="form-control" placeholder="add an object..." aria-label="Add an object" aria-describedby="basic-addon2">
+        -->
+          <select class="form-control" id="object">
+            {{ range . }}
+            <option>{{ .Name }}</option>
+            {{ end }}
+          </select>
+          <div class="input-group-append">
+              <button class="btn btn-outline-info" id="add" type="button">Add</button>
           </div>
-          <div class="form-group">
-              <label>Add here your JSON of Objects:</label>
-              <!--<input type="text" name="objects" id="objects_result" class="form-control"/>
-              <div id="objects_result"></div>
-              -->
-              <input type="text" name="objects" id="objects_result" class="form-control"/>
-          </div>
-          <label>...or simply add here each object, one by one:</label>
-          <div class="col-16">
-            <tr style="height=100%">
-            <td>
-              <ul class="list-group" id="order-list-group" style="float: left; width: 5%;">
-              </ul>
-            </td><td>
-              <ul class="list-group" name="objects-list" id="objects-list-group" style="float:left; width: 80%;">
-              </ul>
-            </td><td>
-              <ul class="list-group" id="del-list-group" style="float: left; width: 15%; height: 100%">
-              </ul>
-            </td>
-            </tr>
-          </div>
-          <div class="input-group mb-3">
-              <input id="object" type="text" class="form-control" placeholder="add an object..." aria-label="Add an object" aria-describedby="basic-addon2">
-              <div class="input-group-append">
-                  <button class="btn btn-outline-info" id="add" type="button">Add</button>
-              </div>
-          </div>
-          <input type="submit" value="Save phase" class="btn btn-primary"/>
-        </form>
-    </div> 
+      </div>
+      <input type="submit" value="Save phase" class="btn btn-primary"/>
+    </form>
+</div> 
 <script>
 var add_button = document.getElementById("add");
 var input = document.getElementById("object");
@@ -82,7 +89,6 @@ function removeLine(delnumber){
   setJson();
 }
 
-
 add_button.addEventListener("click", function() {
   var li = document.createElement("li");
   var li_order = document.createElement("li");
@@ -112,5 +118,5 @@ add_button.addEventListener("click", function() {
   setJson();
 })
 </script>
-  {{ template "Footer" }}
+{{ template "Footer" }}
 {{ end }}

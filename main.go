@@ -10,6 +10,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strings"
 	"text/template"
 
 	_ "github.com/go-sql-driver/mysql"
@@ -319,7 +320,27 @@ func PhasesShow(w http.ResponseWriter, r *http.Request) {
 }
 
 func PhasesNew(w http.ResponseWriter, r *http.Request) {
-	tmpl.ExecuteTemplate(w, "Phases_New", nil)
+	db := dbConn()
+	selDB, err := db.Query("SELECT name FROM objects ORDER BY id DESC")
+	if err != nil {
+		panic(err.Error())
+	}
+
+	var object Object
+	res := []Object{}
+
+	for selDB.Next() {
+		var name string
+		err := selDB.Scan(&name)
+		if err != nil {
+			panic(err.Error())
+		}
+
+		object.Name = name
+		res = append(res, object)
+	}
+	defer db.Close()
+	tmpl.ExecuteTemplate(w, "Phases_New", res)
 }
 
 func PhasesEdit(w http.ResponseWriter, r *http.Request) {
@@ -465,7 +486,29 @@ func PathsShow(w http.ResponseWriter, r *http.Request) {
 }
 
 func PathsNew(w http.ResponseWriter, r *http.Request) {
-	tmpl.ExecuteTemplate(w, "Paths_New", nil)
+	db := dbConn()
+	selDB, err := db.Query("SELECT id, name FROM phases ORDER BY id DESC")
+	if err != nil {
+		panic(err.Error())
+	}
+
+	phase := Phase{}
+	res := []Phase{}
+
+	for selDB.Next() {
+		var id int
+		var name string
+		err := selDB.Scan(&id, &name)
+		if err != nil {
+			panic(err.Error())
+		}
+
+		phase.Id = id
+		phase.Name = name
+		res = append(res, phase)
+	}
+	tmpl.ExecuteTemplate(w, "Paths_New", res)
+	defer db.Close()
 }
 
 func PathsEdit(w http.ResponseWriter, r *http.Request) {
@@ -501,7 +544,7 @@ func PathsInsert(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "POST" {
 		name := r.FormValue("name")
 		phase_order := r.FormValue("phase_order")
-		phase_id := r.FormValue("phase_id")
+		phase_id := strings.Split(r.FormValue("phase_id"), `->`)[0]
 		insForm, err := db.Prepare("INSERT INTO paths (name, phase_order, phase_id) VALUES (?, ?, ?)")
 		if err != nil {
 			panic(err.Error())
