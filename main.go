@@ -5,6 +5,8 @@ package main
 import (
 	"database/sql"
 	"encoding/json"
+	"fmt"
+	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
@@ -154,6 +156,53 @@ func ObjectsEdit(w http.ResponseWriter, r *http.Request) {
 }
 
 func ObjectsInsert(w http.ResponseWriter, r *http.Request) {
+	db := dbConn()
+	if r.Method == "POST" {
+		name := r.FormValue("name")
+		content := name + ".png"
+		// Get file
+		r.ParseMultipartForm(10 << 20)
+		file, _, err := r.FormFile("content_file")
+		if err != nil {
+			fmt.Println("Error Retrieving the File")
+			fmt.Println(err)
+			return
+		}
+		defer file.Close()
+
+		//// Create a file within our files directory that is called as the name.png
+		//tempFile, err := ioutil.TempFile("files", content)
+		//if err != nil {
+		//	fmt.Println(err)
+		//}
+		//defer tempFile.Close()
+
+		// read all of the contents of our uploaded file into a
+		// byte array
+		fileBytes, err := ioutil.ReadAll(file)
+		if err != nil {
+			fmt.Println(err)
+		}
+		//// write this byte array to our temporary file
+		//tempFile.Write(fileBytes)
+		err = ioutil.WriteFile("./files/"+content, fileBytes, 0644)
+		if err != nil {
+			fmt.Println(err)
+		}
+
+		// Add entry to our DB
+		insForm, err := db.Prepare("INSERT INTO objects (name, content) VALUES (?, ?)")
+		if err != nil {
+			panic(err.Error())
+		}
+		insForm.Exec(name, content)
+		log.Println("Insert Data: name " + name + " | content " + content)
+	}
+	defer db.Close()
+	http.Redirect(w, r, "/objects", 301)
+}
+
+func ObjectsInsertOld(w http.ResponseWriter, r *http.Request) {
 	db := dbConn()
 	if r.Method == "POST" {
 		name := r.FormValue("name")
@@ -519,5 +568,7 @@ func main() {
 	http.HandleFunc("/paths_insert", PathsInsert)
 	http.HandleFunc("/paths_update", PathsUpdate)
 	http.HandleFunc("/paths_delete", PathsDelete)
+	//http.PathPrefix("/files/").Handler(http.StripPrefix("/files/", http.FileServer(http.Dir("./files/"))))
+	http.Handle("/files/", http.StripPrefix("/files/", http.FileServer(http.Dir("./files/"))))
 	http.ListenAndServe(":8080", nil)
 }
