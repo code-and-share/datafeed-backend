@@ -23,7 +23,7 @@ TBD
   * Add possibility to upload a file :ok:
   * Add possibility to get file from outside the container :ok:
   * Load images into backend :ok:
-  * Change frontend to get images from this backend
+  * Change frontend to get images from this backend :ok:
 * I want to be able to quickly list objects, phases and paths :ok:
   * Main menu to access lists :ok:
   * Upper navigation bar used everywhere :ok:
