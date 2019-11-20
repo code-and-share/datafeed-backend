@@ -69,7 +69,7 @@ TBD
   * Delete path :ok:
   * Show phases that still exist but are no longer in path :x:
 * Build tests :x:
-* Containerize app :x:
+* Containerize app :ok:
 
 # Possible trade-offs between Quality – Time – Cost
 TBD
