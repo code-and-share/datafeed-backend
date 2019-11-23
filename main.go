@@ -10,6 +10,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strconv"
 	"strings"
 	"text/template"
 
@@ -100,7 +101,7 @@ func Objects(w http.ResponseWriter, r *http.Request) {
 func ObjectsShow(w http.ResponseWriter, r *http.Request) {
 	db := dbConnPostgres()
 	nId := r.URL.Query().Get("id")
-	selDB, err := db.Query("SELECT * FROM objects WHERE id=?", nId)
+	selDB, err := db.Query("SELECT * FROM objects WHERE id=$1", nId)
 	if err != nil {
 		panic(err.Error())
 	}
@@ -132,7 +133,7 @@ func ObjectsNew(w http.ResponseWriter, r *http.Request) {
 func ObjectsEdit(w http.ResponseWriter, r *http.Request) {
 	db := dbConnPostgres()
 	nId := r.URL.Query().Get("id")
-	selDB, err := db.Query("SELECT * FROM objects WHERE id=?", nId)
+	selDB, err := db.Query("SELECT * FROM objects WHERE id=$1", nId)
 	if err != nil {
 		panic(err.Error())
 	}
@@ -185,7 +186,7 @@ func ObjectsInsert(w http.ResponseWriter, r *http.Request) {
 		}
 
 		// Add entry to our DB
-		insForm, err := db.Prepare("INSERT INTO objects (name, content) VALUES (?, ?)")
+		insForm, err := db.Prepare("INSERT INTO objects (name, content) VALUES ($1, $2)")
 		if err != nil {
 			panic(err.Error())
 		}
@@ -225,7 +226,7 @@ func ObjectsUpdate(w http.ResponseWriter, r *http.Request) {
 			fmt.Println(err)
 		}
 
-		insForm, err := db.Prepare("UPDATE objects SET name=?, content=? WHERE id=?")
+		insForm, err := db.Prepare("UPDATE objects SET name=$1, content=$2 WHERE id=$3")
 		if err != nil {
 			panic(err.Error())
 		}
@@ -239,7 +240,7 @@ func ObjectsUpdate(w http.ResponseWriter, r *http.Request) {
 func ObjectsDelete(w http.ResponseWriter, r *http.Request) {
 	db := dbConnPostgres()
 	object := r.URL.Query().Get("id")
-	delForm, err := db.Prepare("DELETE FROM objects WHERE id=?")
+	delForm, err := db.Prepare("DELETE FROM objects WHERE id=$1")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -289,7 +290,7 @@ func Phases(w http.ResponseWriter, r *http.Request) {
 func PhasesShow(w http.ResponseWriter, r *http.Request) {
 	db := dbConnPostgres()
 	nId := r.URL.Query().Get("id")
-	selDB, err := db.Query("SELECT * FROM phases WHERE id=?", nId)
+	selDB, err := db.Query("SELECT * FROM phases WHERE id=$1", nId)
 	if err != nil {
 		panic(err.Error())
 	}
@@ -346,7 +347,7 @@ func PhasesNew(w http.ResponseWriter, r *http.Request) {
 func PhasesEdit(w http.ResponseWriter, r *http.Request) {
 	db := dbConnPostgres()
 	nId := r.URL.Query().Get("id")
-	selDB, err := db.Query("SELECT * FROM phases WHERE id=?", nId)
+	selDB, err := db.Query("SELECT * FROM phases WHERE id=$1", nId)
 	if err != nil {
 		panic(err.Error())
 	}
@@ -381,7 +382,7 @@ func PhasesInsert(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "POST" {
 		name := r.FormValue("name")
 		objects := r.FormValue("objects")
-		insForm, err := db.Prepare("INSERT INTO phases (name, objects) VALUES (?, ?)")
+		insForm, err := db.Prepare("INSERT INTO phases (name, objects) VALUES ($1, $2)")
 		if err != nil {
 			panic(err.Error())
 		}
@@ -401,7 +402,7 @@ func PhasesUpdate(w http.ResponseWriter, r *http.Request) {
 		id := r.FormValue("id")
 		name := r.FormValue("name")
 		objects := r.FormValue("objects")
-		insForm, err := db.Prepare("UPDATE phases SET name=?, objects=? WHERE id=?")
+		insForm, err := db.Prepare("UPDATE phases SET name=$1, objects=$2 WHERE id=$3")
 		if err != nil {
 			panic(err.Error())
 		}
@@ -415,7 +416,7 @@ func PhasesUpdate(w http.ResponseWriter, r *http.Request) {
 func PhasesDelete(w http.ResponseWriter, r *http.Request) {
 	db := dbConnPostgres()
 	phase := r.URL.Query().Get("id")
-	delForm, err := db.Prepare("DELETE FROM phases WHERE id=?")
+	delForm, err := db.Prepare("DELETE FROM phases WHERE id=$1")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -459,7 +460,7 @@ func Paths(w http.ResponseWriter, r *http.Request) {
 func PathsShow(w http.ResponseWriter, r *http.Request) {
 	db := dbConnPostgres()
 	nId := r.URL.Query().Get("id")
-	selDB, err := db.Query("SELECT * FROM paths WHERE id=?", nId)
+	selDB, err := db.Query("SELECT * FROM paths WHERE id=$1", nId)
 	if err != nil {
 		panic(err.Error())
 	}
@@ -514,7 +515,7 @@ func PathsNew(w http.ResponseWriter, r *http.Request) {
 func PathsEdit(w http.ResponseWriter, r *http.Request) {
 	db := dbConnPostgres()
 	nId := r.URL.Query().Get("id")
-	selDB, err := db.Query("SELECT * FROM paths WHERE id=?", nId)
+	selDB, err := db.Query("SELECT * FROM paths WHERE id=$1", nId)
 	if err != nil {
 		panic(err.Error())
 	}
@@ -544,13 +545,13 @@ func PathsInsert(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "POST" {
 		name := r.FormValue("name")
 		phase_order := r.FormValue("phase_order")
-		phase_id := strings.Split(r.FormValue("phase_id"), `->`)[0]
-		insForm, err := db.Prepare("INSERT INTO paths (name, phase_order, phase_id) VALUES (?, ?, ?)")
+		phase_id, _ := strconv.Atoi(strings.Split(r.FormValue("phase_id"), `->`)[0])
+		insForm, err := db.Prepare("INSERT INTO paths (name, phase_order, phase_id) VALUES ($1, $2, $3)")
 		if err != nil {
 			panic(err.Error())
 		}
 		insForm.Exec(name, phase_order, phase_id)
-		log.Println("Insert Data: name " + name + " | phase_order " + phase_order + " | phase_id " + phase_id)
+		log.Println("Insert Data: name " + name + " | phase_order " + phase_order + " | phase_id " + strconv.Itoa(phase_id))
 	}
 	defer db.Close()
 	http.Redirect(w, r, "/paths", 301)
@@ -563,7 +564,7 @@ func PathsUpdate(w http.ResponseWriter, r *http.Request) {
 		name := r.FormValue("name")
 		phase_order := r.FormValue("phase_order")
 		phase_id := r.FormValue("phase_id")
-		insForm, err := db.Prepare("UPDATE paths SET name=?, phase_order=?, phase_id=? WHERE id=?")
+		insForm, err := db.Prepare("UPDATE paths SET name=$1, phase_order=$2, phase_id=$3 WHERE id=$4")
 		if err != nil {
 			panic(err.Error())
 		}
@@ -577,7 +578,7 @@ func PathsUpdate(w http.ResponseWriter, r *http.Request) {
 func PathsDelete(w http.ResponseWriter, r *http.Request) {
 	db := dbConnPostgres()
 	path := r.URL.Query().Get("id")
-	delForm, err := db.Prepare("DELETE FROM paths WHERE id=?")
+	delForm, err := db.Prepare("DELETE FROM paths WHERE id=$1")
 	if err != nil {
 		panic(err.Error())
 	}

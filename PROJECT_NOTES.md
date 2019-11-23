@@ -21,7 +21,7 @@ TBD
 ## Specific
 * I want to store the images on this container, make it available for the frontend to use :ok:
   * Add possibility to upload a file :ok:
-  * Load images into backend :x:
+  * Load images into backend :ok:
   * Change frontend to get images from this backend :ok:
 * I want to be able to quickly list objects, phases and paths :ok:
   * Main menu to access lists :ok:
@@ -30,14 +30,14 @@ TBD
   * List phase :ok:
   * List path :ok:
 * I want to be able to quickly add objects, phases and paths :x:
-  * Add possibility to save to DB a new object :x:
-  * Add object :x:
-  * Add phase :x:
-  * Force format -> [{"object": "forest001", "position": "1"}, {...}] :x:
-  * Delete buttons should show hand mouse pointer :x:
-  * Get objects for phase from actual objects :x:
+  * Add possibility to save to DB a new object :ok:
+  * Add object :ok:
+  * Add phase :ok:
+  * Force format -> [{"object": "forest001", "position": "1"}, {...}] :ok:
+  * Delete buttons should show hand mouse pointer :ok:
+  * Get objects for phase from actual objects :ok:
    * Find a way for this to scale :x:
-  * Add Phase ID to paths_new :x:
+  * Add Phase ID to paths_new :ok:
   * Add path :x:
   * Get phases for path from actual phases :x:
    * Find a way for this to scale :x:
