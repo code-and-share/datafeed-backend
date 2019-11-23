@@ -38,34 +38,37 @@ TBD
   * Get objects for phase from actual objects :ok:
    * Find a way for this to scale :x:
   * Add Phase ID to paths_new :ok:
-  * Add path :x:
-  * Get phases for path from actual phases :x:
+  * Add path :ok:
+  * Get phases for path from actual phases :ok:
    * Find a way for this to scale :x:
 * I want to be able to quickly view objects, phases and paths :x:
-  * View object :x:
-  * View phase :x:
+  * View object :ok:
+  * View phase :ok:
    * Get objects for phase from actual objects, link to see them :x:
-  * View path :x:
+  * View path :ok:
     * Get phases for path from actual phases, link to see them :x:
 * I want to be able to quickly edit objects, phases and paths :x:
-  * Get ids too, for saving later :x:
-  * Edit object :x:
-  * Edit phase :x:
-  * Get objects for phase from actual objects :x:
-  * Edit path :x:
-  * Get phases for path from actual phases :x:
-* I want to be able to quickly insert objects, phases and paths :x:
-  * Insert object :x:
-  * Make it possible to upload images to shared/open volume on the frontend side (or manage images from here) :x:
-  * Insert phase :x:
-  * Get objects for phase from actual objects :x:
-  * Insert path :x:
-  * Get phases for path from actual phases :x:
+  * Get ids too, for saving later :ok:
+  * Edit object :ok:
+   * fail when no image added
+  * Edit phase :ok:
+   * Get objects for phase from actual objects :x:
+  * Edit path :ok:
+   * Get phases for path from actual phases :x:
+* I want to be able to quickly insert objects, phases and paths :ok:
+  * Insert object :ok:
+   * Make it possible to upload images to shared/open volume on the frontend side (or manage images from here) :ok:
+  * Insert phase :ok:
+   * Get objects for phase from actual objects :ok:
+  * Insert path :ok:
+   * Get phases for path from actual phases :ok:
 * I want to be able to quickly delete objects, phases and paths :x:
-  * Delete object :x:
+  * Delete object :ok:
   * Delete phase :x:
-  * Show objects that still exist but are no longer in phase :x:
+   * Investigate why it sometimes deletes and sometimes not :x:
+   * Show objects that still exist but are no longer in phase :x:
   * Delete path :x:
+   * Investigate why it sometimes deletes and sometimes not :x:
   * Show phases that still exist but are no longer in path :x:
 * Build tests :x:
 * Containerize app :ok:

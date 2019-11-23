@@ -415,13 +415,13 @@ func PhasesUpdate(w http.ResponseWriter, r *http.Request) {
 
 func PhasesDelete(w http.ResponseWriter, r *http.Request) {
 	db := dbConnPostgres()
-	phase := r.URL.Query().Get("id")
+	phase, _ := strconv.Atoi(r.URL.Query().Get("id"))
 	delForm, err := db.Prepare("DELETE FROM phases WHERE id=$1")
 	if err != nil {
 		panic(err.Error())
 	}
 	delForm.Exec(phase)
-	log.Println("DELETE " + phase)
+	log.Println("DELETE " + strconv.Itoa(phase))
 	defer db.Close()
 	http.Redirect(w, r, "/phases", 301)
 }
@@ -612,7 +612,6 @@ func main() {
 	http.HandleFunc("/paths_insert", PathsInsert)
 	http.HandleFunc("/paths_update", PathsUpdate)
 	http.HandleFunc("/paths_delete", PathsDelete)
-	//http.PathPrefix("/files/").Handler(http.StripPrefix("/files/", http.FileServer(http.Dir("./files/"))))
 	http.Handle("/files/", http.StripPrefix("/files/", http.FileServer(http.Dir("./files/"))))
 	http.ListenAndServe(":8080", nil)
 }
