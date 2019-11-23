@@ -21,8 +21,7 @@ TBD
 ## Specific
 * I want to store the images on this container, make it available for the frontend to use :ok:
   * Add possibility to upload a file :ok:
-  * Add possibility to get file from outside the container :ok:
-  * Load images into backend :ok:
+  * Load images into backend :x:
   * Change frontend to get images from this backend :ok:
 * I want to be able to quickly list objects, phases and paths :ok:
   * Main menu to access lists :ok:
@@ -31,42 +30,42 @@ TBD
   * List phase :ok:
   * List path :ok:
 * I want to be able to quickly add objects, phases and paths :x:
-  * Add possibility to save to DB a new object :ok:
-  * Add object :ok:
-  * Add phase :ok:
-  * Force format -> [{"object": "forest001", "position": "1"}, {...}] :ok
-  * Delete buttons should show hand mouse pointer :ok:
-  * Get objects for phase from actual objects :ok:
+  * Add possibility to save to DB a new object :x:
+  * Add object :x:
+  * Add phase :x:
+  * Force format -> [{"object": "forest001", "position": "1"}, {...}] :x:
+  * Delete buttons should show hand mouse pointer :x:
+  * Get objects for phase from actual objects :x:
    * Find a way for this to scale :x:
-  * Add Phase ID to paths_new :ok:
-  * Add path :ok:
-  * Get phases for path from actual phases :ok:
+  * Add Phase ID to paths_new :x:
+  * Add path :x:
+  * Get phases for path from actual phases :x:
    * Find a way for this to scale :x:
 * I want to be able to quickly view objects, phases and paths :x:
-  * View object :ok:
-  * View phase :ok:
+  * View object :x:
+  * View phase :x:
    * Get objects for phase from actual objects, link to see them :x:
-  * View path :ok:
+  * View path :x:
     * Get phases for path from actual phases, link to see them :x:
 * I want to be able to quickly edit objects, phases and paths :x:
-  * Get ids too, for saving later :ok:
-  * Edit object :ok:
+  * Get ids too, for saving later :x:
+  * Edit object :x:
   * Edit phase :x:
   * Get objects for phase from actual objects :x:
-  * Edit path :ok:
+  * Edit path :x:
   * Get phases for path from actual phases :x:
 * I want to be able to quickly insert objects, phases and paths :x:
-  * Insert object :ok:
+  * Insert object :x:
   * Make it possible to upload images to shared/open volume on the frontend side (or manage images from here) :x:
-  * Insert phase :ok:
+  * Insert phase :x:
   * Get objects for phase from actual objects :x:
-  * Insert path :ok:
+  * Insert path :x:
   * Get phases for path from actual phases :x:
 * I want to be able to quickly delete objects, phases and paths :x:
-  * Delete object :ok:
-  * Delete phase :ok:
+  * Delete object :x:
+  * Delete phase :x:
   * Show objects that still exist but are no longer in phase :x:
-  * Delete path :ok:
+  * Delete path :x:
   * Show phases that still exist but are no longer in path :x:
 * Build tests :x:
 * Containerize app :ok:

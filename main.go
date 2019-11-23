@@ -13,7 +13,7 @@ import (
 	"strings"
 	"text/template"
 
-	_ "github.com/go-sql-driver/mysql"
+	_ "github.com/lib/pq"
 )
 
 // Object struct
@@ -44,14 +44,14 @@ type Path struct {
 	PhaseId    int
 }
 
-func dbConn() (db *sql.DB) {
-	dbDriver := "mysql"
-	dbUser := os.Getenv("DB_USER")
-	dbPass := os.Getenv("DB_PASS")
-	dbName := os.Getenv("DB_NAME")
-	dbServer := os.Getenv("DB_HOST")
-	dbPort := os.Getenv("DB_PORT")
-	db, err := sql.Open(dbDriver, dbUser+":"+dbPass+"@tcp("+dbServer+":"+dbPort+")/"+dbName)
+func dbConnPostgres() (db *sql.DB) {
+	dbDriver := "postgres"
+	dbUser := os.Getenv("DB_PSQL_USER")
+	dbPass := os.Getenv("DB_PSQL_PASS")
+	dbName := os.Getenv("DB_PSQL_NAME")
+	dbHost := os.Getenv("DB_PSQL_HOST")
+	dbPort := os.Getenv("DB_PSQL_PORT")
+	db, err := sql.Open(dbDriver, "postgres://"+dbUser+":"+dbPass+"@"+dbHost+":"+dbPort+"/"+dbName+"?sslmode=disable")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -70,7 +70,7 @@ func Index(w http.ResponseWriter, r *http.Request) {
 // Functions to handle Objects
 //-----------------------------------------------------------
 func Objects(w http.ResponseWriter, r *http.Request) {
-	db := dbConn()
+	db := dbConnPostgres()
 	selDB, err := db.Query("SELECT * FROM objects ORDER BY id DESC")
 	if err != nil {
 		panic(err.Error())
@@ -98,7 +98,7 @@ func Objects(w http.ResponseWriter, r *http.Request) {
 }
 
 func ObjectsShow(w http.ResponseWriter, r *http.Request) {
-	db := dbConn()
+	db := dbConnPostgres()
 	nId := r.URL.Query().Get("id")
 	selDB, err := db.Query("SELECT * FROM objects WHERE id=?", nId)
 	if err != nil {
@@ -130,7 +130,7 @@ func ObjectsNew(w http.ResponseWriter, r *http.Request) {
 }
 
 func ObjectsEdit(w http.ResponseWriter, r *http.Request) {
-	db := dbConn()
+	db := dbConnPostgres()
 	nId := r.URL.Query().Get("id")
 	selDB, err := db.Query("SELECT * FROM objects WHERE id=?", nId)
 	if err != nil {
@@ -157,7 +157,7 @@ func ObjectsEdit(w http.ResponseWriter, r *http.Request) {
 }
 
 func ObjectsInsert(w http.ResponseWriter, r *http.Request) {
-	db := dbConn()
+	db := dbConnPostgres()
 	if r.Method == "POST" {
 		name := r.FormValue("name")
 		content := name + ".png"
@@ -197,7 +197,7 @@ func ObjectsInsert(w http.ResponseWriter, r *http.Request) {
 }
 
 func ObjectsUpdate(w http.ResponseWriter, r *http.Request) {
-	db := dbConn()
+	db := dbConnPostgres()
 	if r.Method == "POST" {
 		id := r.FormValue("id")
 		name := r.FormValue("name")
@@ -237,7 +237,7 @@ func ObjectsUpdate(w http.ResponseWriter, r *http.Request) {
 }
 
 func ObjectsDelete(w http.ResponseWriter, r *http.Request) {
-	db := dbConn()
+	db := dbConnPostgres()
 	object := r.URL.Query().Get("id")
 	delForm, err := db.Prepare("DELETE FROM objects WHERE id=?")
 	if err != nil {
@@ -253,7 +253,7 @@ func ObjectsDelete(w http.ResponseWriter, r *http.Request) {
 // Functions to handle Phases
 //-----------------------------------------------------------
 func Phases(w http.ResponseWriter, r *http.Request) {
-	db := dbConn()
+	db := dbConnPostgres()
 	selDB, err := db.Query("SELECT * FROM phases ORDER BY id DESC")
 	if err != nil {
 		panic(err.Error())
@@ -287,7 +287,7 @@ func Phases(w http.ResponseWriter, r *http.Request) {
 }
 
 func PhasesShow(w http.ResponseWriter, r *http.Request) {
-	db := dbConn()
+	db := dbConnPostgres()
 	nId := r.URL.Query().Get("id")
 	selDB, err := db.Query("SELECT * FROM phases WHERE id=?", nId)
 	if err != nil {
@@ -320,7 +320,7 @@ func PhasesShow(w http.ResponseWriter, r *http.Request) {
 }
 
 func PhasesNew(w http.ResponseWriter, r *http.Request) {
-	db := dbConn()
+	db := dbConnPostgres()
 	selDB, err := db.Query("SELECT name FROM objects ORDER BY id DESC")
 	if err != nil {
 		panic(err.Error())
@@ -344,7 +344,7 @@ func PhasesNew(w http.ResponseWriter, r *http.Request) {
 }
 
 func PhasesEdit(w http.ResponseWriter, r *http.Request) {
-	db := dbConn()
+	db := dbConnPostgres()
 	nId := r.URL.Query().Get("id")
 	selDB, err := db.Query("SELECT * FROM phases WHERE id=?", nId)
 	if err != nil {
@@ -377,7 +377,7 @@ func PhasesEdit(w http.ResponseWriter, r *http.Request) {
 }
 
 func PhasesInsert(w http.ResponseWriter, r *http.Request) {
-	db := dbConn()
+	db := dbConnPostgres()
 	if r.Method == "POST" {
 		name := r.FormValue("name")
 		objects := r.FormValue("objects")
@@ -396,7 +396,7 @@ func PhasesInsert(w http.ResponseWriter, r *http.Request) {
 }
 
 func PhasesUpdate(w http.ResponseWriter, r *http.Request) {
-	db := dbConn()
+	db := dbConnPostgres()
 	if r.Method == "POST" {
 		id := r.FormValue("id")
 		name := r.FormValue("name")
@@ -413,7 +413,7 @@ func PhasesUpdate(w http.ResponseWriter, r *http.Request) {
 }
 
 func PhasesDelete(w http.ResponseWriter, r *http.Request) {
-	db := dbConn()
+	db := dbConnPostgres()
 	phase := r.URL.Query().Get("id")
 	delForm, err := db.Prepare("DELETE FROM phases WHERE id=?")
 	if err != nil {
@@ -429,7 +429,7 @@ func PhasesDelete(w http.ResponseWriter, r *http.Request) {
 // Functions to handle Paths
 //-----------------------------------------------------------
 func Paths(w http.ResponseWriter, r *http.Request) {
-	db := dbConn()
+	db := dbConnPostgres()
 	selDB, err := db.Query("SELECT * FROM paths ORDER BY id DESC")
 	if err != nil {
 		panic(err.Error())
@@ -457,7 +457,7 @@ func Paths(w http.ResponseWriter, r *http.Request) {
 	defer db.Close()
 }
 func PathsShow(w http.ResponseWriter, r *http.Request) {
-	db := dbConn()
+	db := dbConnPostgres()
 	nId := r.URL.Query().Get("id")
 	selDB, err := db.Query("SELECT * FROM paths WHERE id=?", nId)
 	if err != nil {
@@ -486,7 +486,7 @@ func PathsShow(w http.ResponseWriter, r *http.Request) {
 }
 
 func PathsNew(w http.ResponseWriter, r *http.Request) {
-	db := dbConn()
+	db := dbConnPostgres()
 	selDB, err := db.Query("SELECT id, name FROM phases ORDER BY id DESC")
 	if err != nil {
 		panic(err.Error())
@@ -512,7 +512,7 @@ func PathsNew(w http.ResponseWriter, r *http.Request) {
 }
 
 func PathsEdit(w http.ResponseWriter, r *http.Request) {
-	db := dbConn()
+	db := dbConnPostgres()
 	nId := r.URL.Query().Get("id")
 	selDB, err := db.Query("SELECT * FROM paths WHERE id=?", nId)
 	if err != nil {
@@ -540,7 +540,7 @@ func PathsEdit(w http.ResponseWriter, r *http.Request) {
 }
 
 func PathsInsert(w http.ResponseWriter, r *http.Request) {
-	db := dbConn()
+	db := dbConnPostgres()
 	if r.Method == "POST" {
 		name := r.FormValue("name")
 		phase_order := r.FormValue("phase_order")
@@ -557,7 +557,7 @@ func PathsInsert(w http.ResponseWriter, r *http.Request) {
 }
 
 func PathsUpdate(w http.ResponseWriter, r *http.Request) {
-	db := dbConn()
+	db := dbConnPostgres()
 	if r.Method == "POST" {
 		id := r.FormValue("id")
 		name := r.FormValue("name")
@@ -575,7 +575,7 @@ func PathsUpdate(w http.ResponseWriter, r *http.Request) {
 }
 
 func PathsDelete(w http.ResponseWriter, r *http.Request) {
-	db := dbConn()
+	db := dbConnPostgres()
 	path := r.URL.Query().Get("id")
 	delForm, err := db.Prepare("DELETE FROM paths WHERE id=?")
 	if err != nil {
