@@ -9,7 +9,7 @@ WORKDIR /app
  
 RUN apk add --update \
     git \
-  && go get -u github.com/go-sql-driver/mysql \
+  && go get -u github.com/lib/pq \
   && go build -o main . 
  
 ENV DB_NAME Paths
