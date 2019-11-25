@@ -35,7 +35,7 @@
         <td>
           <a href="/paths_show?id={{ .Id }}" class="btn btn-primary">View</a>
           <a href="/paths_edit?id={{ .Id }}" class="btn btn-primary">Edit</a>
-          <a href="/paths_delete?id={{ .Id }}" class="btn btn-danger">Delete</a>
+          <a href="/paths_del?id={{ .Id }}" onclick="return confirm('Are you sure you want to delete Path ID #{{ .Id }}?')" class="btn btn-danger">Delete</a>
         </td>
       </tr>
       {{ end }}

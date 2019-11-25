@@ -32,7 +32,7 @@
         <td>
           <a href="/phases_show?id={{ .Id }}" class="btn btn-primary">View</a>
           <a href="/phases_edit?id={{ .Id }}" class="btn btn-primary">Edit</a>
-          <a href="/phases_delete?id={{ .Id }}" class="btn btn-danger">Delete</a>
+          <a href="/phases_del?id={{ .Id }}" onclick="return confirm('Are you sure you want to delete Phase ID #{{ .Id }}?')" class="btn btn-danger">Delete</a>
         </td>
       </tr>
       {{ end }}

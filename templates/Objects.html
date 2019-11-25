@@ -32,7 +32,7 @@
         <td>
           <a href="/objects_show?id={{ .Id }}" class="btn btn-primary">View</a>
           <a href="/objects_edit?id={{ .Id }}" class="btn btn-primary">Edit</a>
-          <a href="/objects_delete?id={{ .Id }}" class="btn btn-danger">Delete</a>
+          <a href="/objects_del?id={{ .Id }}" onclick="return confirm('Are you sure you want to delete Object ID #{{ .Id }}?')" class="btn btn-danger">Delete</a>
         </td>
       </tr>
       {{ end }}

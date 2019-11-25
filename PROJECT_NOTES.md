@@ -63,12 +63,13 @@ TBD
   * Insert path :ok:
    * Get phases for path from actual phases :ok:
 * I want to be able to quickly delete objects, phases and paths :x:
+  * Always ask for confirmation first :ok:
   * Delete object :ok:
-  * Delete phase :x:
-   * Investigate why it sometimes deletes and sometimes not :x:
+  * Delete phase :ok:
+   * Investigate why it sometimes deletes and sometimes not :ok:
    * Show objects that still exist but are no longer in phase :x:
-  * Delete path :x:
-   * Investigate why it sometimes deletes and sometimes not :x:
+  * Delete path :ok:
+   * Investigate why it sometimes deletes and sometimes not :ok:
   * Show phases that still exist but are no longer in path :x:
 * Build tests :x:
 * Containerize app :ok:

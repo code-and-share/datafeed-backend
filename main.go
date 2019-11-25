@@ -238,6 +238,7 @@ func ObjectsUpdate(w http.ResponseWriter, r *http.Request) {
 }
 
 func ObjectsDelete(w http.ResponseWriter, r *http.Request) {
+	log.Println("######################## DELETE ")
 	db := dbConnPostgres()
 	object := r.URL.Query().Get("id")
 	delForm, err := db.Prepare("DELETE FROM objects WHERE id=$1")
@@ -414,6 +415,7 @@ func PhasesUpdate(w http.ResponseWriter, r *http.Request) {
 }
 
 func PhasesDelete(w http.ResponseWriter, r *http.Request) {
+	log.Println("######################## DELETE ")
 	db := dbConnPostgres()
 	phase, _ := strconv.Atoi(r.URL.Query().Get("id"))
 	delForm, err := db.Prepare("DELETE FROM phases WHERE id=$1")
@@ -576,6 +578,7 @@ func PathsUpdate(w http.ResponseWriter, r *http.Request) {
 }
 
 func PathsDelete(w http.ResponseWriter, r *http.Request) {
+	log.Println("######################## DELETE ")
 	db := dbConnPostgres()
 	path := r.URL.Query().Get("id")
 	delForm, err := db.Prepare("DELETE FROM paths WHERE id=$1")
@@ -597,21 +600,22 @@ func main() {
 	http.HandleFunc("/objects_edit", ObjectsEdit)
 	http.HandleFunc("/objects_insert", ObjectsInsert)
 	http.HandleFunc("/objects_update", ObjectsUpdate)
-	http.HandleFunc("/objects_delete", ObjectsDelete)
+	http.HandleFunc("/objects_del", ObjectsDelete)
 	http.HandleFunc("/phases", Phases)
 	http.HandleFunc("/phases_show", PhasesShow)
 	http.HandleFunc("/phases_new", PhasesNew)
 	http.HandleFunc("/phases_edit", PhasesEdit)
 	http.HandleFunc("/phases_insert", PhasesInsert)
 	http.HandleFunc("/phases_update", PhasesUpdate)
-	http.HandleFunc("/phases_delete", PhasesDelete)
+	http.HandleFunc("/phases_del", PhasesDelete)
 	http.HandleFunc("/paths", Paths)
 	http.HandleFunc("/paths_show", PathsShow)
 	http.HandleFunc("/paths_new", PathsNew)
 	http.HandleFunc("/paths_edit", PathsEdit)
 	http.HandleFunc("/paths_insert", PathsInsert)
 	http.HandleFunc("/paths_update", PathsUpdate)
-	http.HandleFunc("/paths_delete", PathsDelete)
+	// avoid using _delete! it somehow is a reserved name??
+	http.HandleFunc("/paths_del", PathsDelete)
 	http.Handle("/files/", http.StripPrefix("/files/", http.FileServer(http.Dir("./files/"))))
 	http.ListenAndServe(":8080", nil)
 }
