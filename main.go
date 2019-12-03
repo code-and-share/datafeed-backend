@@ -45,11 +45,19 @@ type Path struct {
 	PhaseId    int
 }
 
+func getVarFromFile(f string) string {
+	buf, err := ioutil.ReadFile(f)
+	if err != nil {
+		return ""
+	}
+	return strings.TrimSuffix(string(buf), "\n")
+}
+
 func dbConnPostgres() (db *sql.DB) {
 	dbDriver := "postgres"
-	dbUser := os.Getenv("DB_PSQL_USER")
-	dbPass := os.Getenv("DB_PSQL_PASS")
-	dbName := os.Getenv("DB_PSQL_NAME")
+	dbName := getVarFromFile(os.Getenv("DB_NAME_FILE"))
+	dbUser := getVarFromFile(os.Getenv("DB_USER_FILE"))
+	dbPass := getVarFromFile(os.Getenv("DB_PASS_FILE"))
 	dbHost := os.Getenv("DB_PSQL_HOST")
 	dbPort := os.Getenv("DB_PSQL_PORT")
 	db, err := sql.Open(dbDriver, "postgres://"+dbUser+":"+dbPass+"@"+dbHost+":"+dbPort+"/"+dbName+"?sslmode=disable")
