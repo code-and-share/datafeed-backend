@@ -1,0 +1,28 @@
+version: '3'
+services:
+  datafeed_postgres:
+    image: postgres:12.1-alpine
+    ports:
+     - "5432:5432"
+    volumes:
+      - ./data:/docker-entrypoint-initdb.d
+    networks:
+      - network_stepsdatafeed
+  datafeed_frontend:
+    image: angelalonso/cns_datafeed_frontend:v0.13
+    ports:
+      - "9000:9000"
+    environment:
+      DB_NAME_FILE: "secrets/db_feed_name"
+      DB_USER_FILE: "secrets/db_feed_user"
+      DB_PASS_FILE: "secrets/db_feed_pass"
+      DB_PSQL_HOST: "datafeed_postgres"
+      DB_PSQL_PORT: "5432"
+      PORT: "9000"
+      OWN_URL: ""
+      FILES_SOURCE: "http://0.0.0.0:8080/files/"
+    networks:
+      - network_stepsdatafeed
+networks:
+  network_stepsdatafeed:
+    external: false

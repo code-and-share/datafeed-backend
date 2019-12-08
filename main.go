@@ -586,7 +586,6 @@ func PathsUpdate(w http.ResponseWriter, r *http.Request) {
 }
 
 func PathsDelete(w http.ResponseWriter, r *http.Request) {
-	log.Println("######################## DELETE ")
 	db := dbConnPostgres()
 	path := r.URL.Query().Get("id")
 	delForm, err := db.Prepare("DELETE FROM paths WHERE id=$1")
@@ -597,6 +596,11 @@ func PathsDelete(w http.ResponseWriter, r *http.Request) {
 	log.Println("DELETE " + path)
 	defer db.Close()
 	http.Redirect(w, r, "/paths", 301)
+}
+
+func ImageGet(w http.ResponseWriter, r *http.Request) {
+	var empty string
+	tmpl.ExecuteTemplate(w, "Image_Get", empty)
 }
 
 func main() {
@@ -622,6 +626,8 @@ func main() {
 	http.HandleFunc("/paths_edit", PathsEdit)
 	http.HandleFunc("/paths_insert", PathsInsert)
 	http.HandleFunc("/paths_update", PathsUpdate)
+	http.HandleFunc("/image_get", ImageGet)
+
 	// avoid using _delete! it somehow is a reserved name??
 	http.HandleFunc("/paths_del", PathsDelete)
 	http.Handle("/files/", http.StripPrefix("/files/", http.FileServer(http.Dir("./files/"))))
